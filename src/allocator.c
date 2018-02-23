@@ -5,22 +5,22 @@
 #include <stdlib.h>
 #include <string.h>
 
-struct type {
-    struct piq_allocator base;
-};
+typedef struct {
+    piq_allocator_t base;
+} default_type_t;
 
 static
-void retain(struct piq_allocator *base) {
+void retain(piq_allocator_t *base) {
     (void)base;
 }
 
 static
-void release(struct piq_allocator *base) {
+void release(piq_allocator_t *base) {
     (void)base;
 }
 
 static
-void *allocate(struct piq_allocator *base, ptrdiff_t size, ptrdiff_t alignment,
+void *allocate(piq_allocator_t *base, ptrdiff_t size, ptrdiff_t alignment,
                bool fill_with_zeros)
 {
     (void)base;
@@ -36,7 +36,7 @@ void *allocate(struct piq_allocator *base, ptrdiff_t size, ptrdiff_t alignment,
 }
 
 static
-void deallocate(struct piq_allocator *base, void *ptr, ptrdiff_t size,
+void deallocate(piq_allocator_t *base, void *ptr, ptrdiff_t size,
                 ptrdiff_t alignment)
 {
     (void)base;
@@ -47,7 +47,7 @@ void deallocate(struct piq_allocator *base, void *ptr, ptrdiff_t size,
 }
 
 static
-struct piq_allocator_ops const ops = {
+piq_allocator_ops_t const ops = {
     .retain = retain,
     .release = release,
     .allocate = allocate,
@@ -55,10 +55,10 @@ struct piq_allocator_ops const ops = {
 };
 
 static
-struct type instance = {
+default_type_t default_instance = {
     .base.ops = &ops,
 };
 
-struct piq_allocator *piq_acquire_default_allocator(void) {
-    return (void*)&instance;
+piq_allocator_t *piq_acquire_default_allocator(void) {
+    return (void*)&default_instance;
 }

@@ -4,26 +4,26 @@
 #include <stddef.h>
 #include <assert.h>
 
-struct piq_allocator;
+typedef struct piq_allocator piq_allocator_t;
 
-struct piq_allocator_ops {
-    void (*retain)(struct piq_allocator *allocator);
-    void (*release)(struct piq_allocator *allocator);
+typedef struct {
+    void (*retain)(piq_allocator_t *allocator);
+    void (*release)(piq_allocator_t *allocator);
 
-    void *(*allocate)(struct piq_allocator *allocator, ptrdiff_t size,
+    void *(*allocate)(piq_allocator_t *allocator, ptrdiff_t size,
                       ptrdiff_t alignment, _Bool fill_with_zeros);
-    void (*deallocate)(struct piq_allocator *allocator, void *ptr,
-                       ptrdiff_t size, ptrdiff_t alignment);
-};
+    void (*deallocate)(piq_allocator_t *allocator, void *ptr, ptrdiff_t size,
+                       ptrdiff_t alignment);
+} piq_allocator_ops_t;
 
 struct piq_allocator {
-    struct piq_allocator_ops const *const ops;
+    piq_allocator_ops_t const *const ops;
 };
 
-struct piq_allocator *piq_acquire_default_allocator(void);
+piq_allocator_t *piq_acquire_default_allocator(void);
 
 static inline
-void piq_retain_allocator(struct piq_allocator *allocator) {
+void piq_retain_allocator(piq_allocator_t *allocator) {
     assert(allocator);
     assert(allocator->ops);
     assert(allocator->ops->retain);
@@ -31,7 +31,7 @@ void piq_retain_allocator(struct piq_allocator *allocator) {
 }
 
 static inline
-void piq_release_allocator(struct piq_allocator *allocator) {
+void piq_release_allocator(piq_allocator_t *allocator) {
     assert(allocator);
     assert(allocator->ops);
     assert(allocator->ops->release);
@@ -39,7 +39,7 @@ void piq_release_allocator(struct piq_allocator *allocator) {
 }
 
 static inline
-void *piq_allocate(struct piq_allocator *allocator, ptrdiff_t size,
+void *piq_allocate(piq_allocator_t *allocator, ptrdiff_t size,
                    ptrdiff_t alignment, _Bool fill_with_zeros)
 {
     assert(allocator);
@@ -50,7 +50,7 @@ void *piq_allocate(struct piq_allocator *allocator, ptrdiff_t size,
 }
 
 static inline
-void piq_deallocate(struct piq_allocator *allocator, void *ptr, ptrdiff_t size,
+void piq_deallocate(piq_allocator_t *allocator, void *ptr, ptrdiff_t size,
                     ptrdiff_t alignment)
 {
     assert(allocator);
