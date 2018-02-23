@@ -20,7 +20,7 @@ struct piq_allocator {
     piq_allocator_ops_t const *const ops;
 };
 
-piq_allocator_t *piq_acquire_default_allocator(void);
+piq_allocator_t *piq_get_default_allocator(void);
 
 static inline
 void piq_retain_allocator(piq_allocator_t *allocator) {

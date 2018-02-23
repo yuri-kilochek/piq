@@ -59,6 +59,6 @@ default_type_t default_instance = {
     .base.ops = &ops,
 };
 
-piq_allocator_t *piq_acquire_default_allocator(void) {
+piq_allocator_t *piq_get_default_allocator(void) {
     return (void*)&default_instance;
 }
