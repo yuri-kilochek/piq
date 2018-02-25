@@ -25,8 +25,6 @@ void *default_allocate(piq_allocator_t *base, ptrdiff_t *size,
 {
     (void)base;
 
-    assert(size);
-
     void *ptr;
     if (fill_with_zeros && alignment <= (ptrdiff_t)alignof(max_align_t)) {
         ptr = calloc(*size, 1);
