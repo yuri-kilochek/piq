@@ -10,34 +10,36 @@ typedef struct {
 } default_type_t;
 
 static
-void retain(piq_allocator_t *base) {
+void default_retain(piq_allocator_t *base) {
     (void)base;
 }
 
 static
-void release(piq_allocator_t *base) {
+void default_release(piq_allocator_t *base) {
     (void)base;
 }
 
 static
-void *allocate(piq_allocator_t *base, ptrdiff_t size, ptrdiff_t alignment,
-               bool fill_with_zeros)
+void *default_allocate(piq_allocator_t *base, ptrdiff_t *size,
+                       ptrdiff_t alignment, bool fill_with_zeros)
 {
     (void)base;
 
+    assert(size);
+
     void *ptr;
     if (fill_with_zeros && alignment <= (ptrdiff_t)alignof(max_align_t)) {
-        ptr = calloc(size, 1);
+        ptr = calloc(*size, 1);
     } else {
-        ptr = aligned_alloc(alignment, size);
-        if (fill_with_zeros && ptr) { memset(ptr, 0, size); }
+        ptr = aligned_alloc(alignment, *size);
+        if (fill_with_zeros && ptr) { memset(ptr, 0, *size); }
     }
     return ptr;
 }
 
 static
-void deallocate(piq_allocator_t *base, void *ptr, ptrdiff_t size,
-                ptrdiff_t alignment)
+void default_deallocate(piq_allocator_t *base, void *ptr, ptrdiff_t size,
+                        ptrdiff_t alignment)
 {
     (void)base;
     (void)size;
@@ -47,16 +49,16 @@ void deallocate(piq_allocator_t *base, void *ptr, ptrdiff_t size,
 }
 
 static
-piq_allocator_ops_t const ops = {
-    .retain = retain,
-    .release = release,
-    .allocate = allocate,
-    .deallocate = deallocate,
+piq_allocator_ops_t const default_ops = {
+    .retain = default_retain,
+    .release = default_release,
+    .allocate = default_allocate,
+    .deallocate = default_deallocate,
 };
 
 static
 default_type_t default_instance = {
-    .base.ops = &ops,
+    .base.ops = &default_ops,
 };
 
 piq_allocator_t *piq_get_default_allocator(void) {

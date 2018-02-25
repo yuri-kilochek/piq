@@ -10,7 +10,7 @@ typedef struct {
     void (*retain)(piq_allocator_t *allocator);
     void (*release)(piq_allocator_t *allocator);
 
-    void *(*allocate)(piq_allocator_t *allocator, ptrdiff_t size,
+    void *(*allocate)(piq_allocator_t *allocator, ptrdiff_t *size,
                       ptrdiff_t alignment, _Bool fill_with_zeros);
     void (*deallocate)(piq_allocator_t *allocator, void *ptr, ptrdiff_t size,
                        ptrdiff_t alignment);
@@ -39,7 +39,7 @@ void piq_release_allocator(piq_allocator_t *allocator) {
 }
 
 static inline
-void *piq_allocate(piq_allocator_t *allocator, ptrdiff_t size,
+void *piq_allocate(piq_allocator_t *allocator, ptrdiff_t *size,
                    ptrdiff_t alignment, _Bool fill_with_zeros)
 {
     assert(allocator);
