@@ -44,6 +44,7 @@ void piq_deallocate(piq_allocator_t *allocator, void *ptr, ptrdiff_t size,
     allocator->ops->deallocate(allocator, ptr, size, alignment);
 }
 
-piq_allocator_t *piq_get_default_allocator(void);
+extern
+piq_allocator_t *const piq_default_allocator;
 
 #endif

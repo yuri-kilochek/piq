@@ -3,10 +3,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-typedef struct default_ {
-    piq_allocator_t base;
-} default_t;
-
 static
 void default_retain(piq_allocator_t *base) {
     (void)base;
@@ -44,19 +40,11 @@ void default_deallocate(piq_allocator_t *base, void *ptr, ptrdiff_t size,
     free(ptr);
 }
 
-static
-piq_allocator_ops_t const default_ops = {
-    .retain = default_retain,
-    .release = default_release,
-    .allocate = default_allocate,
-    .deallocate = default_deallocate,
+piq_allocator_t *const piq_default_allocator = &(piq_allocator_t) {
+    .ops = &(piq_allocator_ops_t) {
+        .retain = default_retain,
+        .release = default_release,
+        .allocate = default_allocate,
+        .deallocate = default_deallocate,
+    },
 };
-
-static
-default_t default_ = {
-    .base.ops = &default_ops,
-};
-
-piq_allocator_t *piq_get_default_allocator(void) {
-    return (void*)&default_;
-}
