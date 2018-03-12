@@ -1,0 +1,32 @@
+#ifndef PIQ_IMPL_INCLUDE_GUARD_VERSION
+#define PIQ_IMPL_INCLUDE_GUARD_VERSION
+
+${GENERATED_WARNING}
+
+#include <limits.h>
+
+typedef enum piq_version {
+    PIQ_IMPL_VERSION_STRUT = ULONG_MAX,
+} piq_version_t;
+
+#define PIQ_COMPOSE(major, minor, patch) \
+    ((piq_version_t)((unsigned long)((major) | 0) << 22 | \
+                     (unsigned long)((minor) | 0) << 12 | \
+                     (unsigned long)((patch) | 0)))
+
+#define PIQ_GET_MAJOR(version) \
+    ((int)((unsigned long)((version) | 0) >> 22 & 0x3FF))
+
+#define PIQ_GET_MINOR(version) \
+    ((int)((unsigned long)((version) | 0) >> 12 & 0x3FF))
+
+#define PIQ_GET_PATCH(version) \
+    ((int)((version) & 0xFFF))
+
+#define PIQ_VERSION \
+    PIQ_COMPOSE(${VERSION_MAJOR}, ${VERSION_MINOR}, ${VERSION_PATCH})
+
+extern
+piq_version_t const piq_version;
+
+#endif
