@@ -1,13 +1,11 @@
 #include <piq/allocator.h>
 
-#include <stdbool.h>
-#include <stdalign.h>
 #include <stdlib.h>
 #include <string.h>
 
-typedef struct {
+typedef struct default_ {
     piq_allocator_t base;
-} default_type_t;
+} default_t;
 
 static
 void default_retain(piq_allocator_t *base) {
@@ -21,16 +19,16 @@ void default_release(piq_allocator_t *base) {
 
 static
 void *default_allocate(piq_allocator_t *base, ptrdiff_t *size,
-                       ptrdiff_t alignment, bool fill_with_zeros)
+                       ptrdiff_t alignment, _Bool filled_with_zeros)
 {
     (void)base;
 
     void *ptr;
-    if (fill_with_zeros && alignment <= (ptrdiff_t)alignof(max_align_t)) {
+    if (filled_with_zeros && alignment <= (ptrdiff_t)_Alignof(max_align_t)) {
         ptr = calloc(*size, 1);
     } else {
         ptr = aligned_alloc(alignment, *size);
-        if (fill_with_zeros && ptr) { memset(ptr, 0, *size); }
+        if (filled_with_zeros && ptr) { memset(ptr, 0, *size); }
     }
     return ptr;
 }
@@ -55,10 +53,10 @@ piq_allocator_ops_t const default_ops = {
 };
 
 static
-default_type_t default_instance = {
+default_t default_ = {
     .base.ops = &default_ops,
 };
 
 piq_allocator_t *piq_get_default_allocator(void) {
-    return (void*)&default_instance;
+    return (void*)&default_;
 }

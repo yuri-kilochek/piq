@@ -5,12 +5,12 @@
 
 typedef struct piq_allocator piq_allocator_t;
 
-typedef struct {
+typedef struct piq_allocator_ops {
     void (*retain)(piq_allocator_t *allocator);
     void (*release)(piq_allocator_t *allocator);
 
     void *(*allocate)(piq_allocator_t *allocator, ptrdiff_t *size,
-                      ptrdiff_t alignment, _Bool fill_with_zeros);
+                      ptrdiff_t alignment, _Bool filled_with_zeros);
     void (*deallocate)(piq_allocator_t *allocator, void *ptr, ptrdiff_t size,
                        ptrdiff_t alignment);
 } piq_allocator_ops_t;
@@ -18,8 +18,6 @@ typedef struct {
 struct piq_allocator {
     piq_allocator_ops_t const *const ops;
 };
-
-piq_allocator_t *piq_get_default_allocator(void);
 
 static inline
 void piq_retain_allocator(piq_allocator_t *allocator) {
@@ -33,10 +31,10 @@ void piq_release_allocator(piq_allocator_t *allocator) {
 
 static inline
 void *piq_allocate(piq_allocator_t *allocator, ptrdiff_t *size,
-                   ptrdiff_t alignment, _Bool fill_with_zeros)
+                   ptrdiff_t alignment, _Bool filled_with_zeros)
 {
     return allocator->ops->allocate(allocator, size, alignment,
-                                    fill_with_zeros);
+                                    filled_with_zeros);
 }
 
 static inline
@@ -45,5 +43,7 @@ void piq_deallocate(piq_allocator_t *allocator, void *ptr, ptrdiff_t size,
 {
     allocator->ops->deallocate(allocator, ptr, size, alignment);
 }
+
+piq_allocator_t *piq_get_default_allocator(void);
 
 #endif
