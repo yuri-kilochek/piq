@@ -12,12 +12,12 @@ project(piq
 add_custom_command(
     OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/include/piq/version.h"
     COMMAND "${CMAKE_COMMAND}"
-        -D"GENERATED_WARNING=\"// this file is generated from src/version.in\""
-        -D"VERSION_MAJOR=${PROJECT_VERSION_MAJOR}"
-        -D"VERSION_MINOR=${PROJECT_VERSION_MINOR}"
-        -D"VERSION_PATCH=${PROJECT_VERSION_PATCH}"
-        -D"INPUT=${CMAKE_CURRENT_SOURCE_DIR}/src/version.h.in"
-        -D"OUTPUT=include/piq/version.h"
+        -D "GENERATED_WARNING=// this file is generated from src/version.in"
+        -D "VERSION_MAJOR=${PROJECT_VERSION_MAJOR}"
+        -D "VERSION_MINOR=${PROJECT_VERSION_MINOR}"
+        -D "VERSION_PATCH=${PROJECT_VERSION_PATCH}"
+        -D "INPUT=${CMAKE_CURRENT_SOURCE_DIR}/src/version.h.in"
+        -D "OUTPUT=include/piq/version.h"
         -P "${CMAKE_SOURCE_DIR}/cmake/configure_file.cmake"
     MAIN_DEPENDENCY src/version.h.in
 )
