@@ -1,3 +1,3 @@
 #include <piq/version.h>
 
-piq_version_t const piq_version = PIQ_VERSION;
+piq_version_t const piq_library_version = PIQ_HEADER_VERSION;
