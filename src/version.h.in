@@ -3,27 +3,27 @@
 
 ${GENERATED_WARNING}
 
-#include <limits.h>
+#include <stdint.h>
 
 #if __cplusplus
 extern "C" {
 #endif
 
-typedef unsigned long int piq_version_t;
+typedef uint_least32_t piq_version_t;
 
 #define PIQ_COMPOSE_VERSION(major, minor, patch) \
-    (((major) | 0ul) << 22 | \
-     ((minor) | 0ul) << 12 | \
-     ((patch) | 0ul) <<  0)
+    (((major) | UINT32_C(0)) << 22 | \
+     ((minor) | UINT32_C(0)) << 12 | \
+     ((patch) | UINT32_C(0)) <<  0)
 
 #define PIQ_GET_MAJOR(version) \
-    (((version) | 0ul) >> 22 & 0x3FF)
+    (((version) | UINT32_C(0)) >> 22 & 0x3FF)
 
 #define PIQ_GET_MINOR(version) \
-    (((version) | 0ul) >> 12 & 0x3FF)
+    (((version) | UINT32_C(0)) >> 12 & 0x3FF)
 
 #define PIQ_GET_PATCH(version) \
-    (((version) | 0ul) >>  0 & 0xFFF)
+    (((version) | UINT32_C(0)) >>  0 & 0xFFF)
 
 #define PIQ_HEADER_VERSION \
     PIQ_COMPOSE_VERSION(${VERSION_MAJOR}, ${VERSION_MINOR}, ${VERSION_PATCH})
