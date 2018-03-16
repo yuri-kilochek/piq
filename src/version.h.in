@@ -3,7 +3,15 @@
 
 ${GENERATED_WARNING}
 
-#include <limits.h>
+#if __cplusplus
+    #include <climits>
+#else
+    #include <limits.h>
+#endif
+
+#if __cplusplus
+extern "C" {
+#endif
 
 typedef enum piq_impl_version {
     PIQ_IMPL_VERSION_STRUT = ULONG_MAX,
@@ -27,6 +35,10 @@ typedef enum piq_impl_version {
     PIQ_COMPOSE_VERSION(${VERSION_MAJOR}, ${VERSION_MINOR}, ${VERSION_PATCH})
 
 extern
-piq_version_t const piq_library_version;
+piq_version_t const piq_binary_version;
+
+#if __cplusplus
+} // extern "C"
+#endif
 
 #endif
