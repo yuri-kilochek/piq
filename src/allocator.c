@@ -15,9 +15,11 @@ void default_release(piq_allocator_t *base) {
 
 static
 void *default_allocate(piq_allocator_t *base, ptrdiff_t *size,
-                       ptrdiff_t alignment, _Bool filled_with_zeros)
+                       ptrdiff_t alignment, piq_allocation_flags_t flags)
 {
     (void)base;
+
+    _Bool filled_with_zeros = flags & PIQ_FILLED_WITH_ZEROS;
 
     void *ptr;
     if (filled_with_zeros && alignment <= (ptrdiff_t)_Alignof(max_align_t)) {

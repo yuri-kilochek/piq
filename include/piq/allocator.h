@@ -3,19 +3,27 @@
 
 #include <stddef.h>
 
-typedef struct piq_allocator piq_allocator_t;
+#if __cplusplus
+extern "C" {
+#endif
 
-typedef struct piq_allocator_ops {
+typedef unsigned long int piq_allocation_flags_t;
+
+#define PIQ_FILLED_WITH_ZEROS (0x00000001ul)
+
+typedef struct piq_impl_allocator piq_allocator_t;
+
+typedef struct piq_impl_allocator_ops {
     void (*retain)(piq_allocator_t *allocator);
     void (*release)(piq_allocator_t *allocator);
 
     void *(*allocate)(piq_allocator_t *allocator, ptrdiff_t *size,
-                      ptrdiff_t alignment, _Bool filled_with_zeros);
+                      ptrdiff_t alignment, piq_allocation_flags_t flags);
     void (*deallocate)(piq_allocator_t *allocator, void *ptr, ptrdiff_t size,
                        ptrdiff_t alignment);
 } piq_allocator_ops_t;
 
-struct piq_allocator {
+struct piq_impl_allocator {
     piq_allocator_ops_t const *const ops;
 };
 
@@ -31,10 +39,9 @@ void piq_release_allocator(piq_allocator_t *allocator) {
 
 static inline
 void *piq_allocate(piq_allocator_t *allocator, ptrdiff_t *size,
-                   ptrdiff_t alignment, _Bool filled_with_zeros)
+                   ptrdiff_t alignment, piq_allocation_flags_t flags)
 {
-    return allocator->ops->allocate(allocator, size, alignment,
-                                    filled_with_zeros);
+    return allocator->ops->allocate(allocator, size, alignment, flags);
 }
 
 static inline
@@ -46,5 +53,9 @@ void piq_deallocate(piq_allocator_t *allocator, void *ptr, ptrdiff_t size,
 
 extern
 piq_allocator_t *const piq_default_allocator;
+
+#if __cplusplus
+} // extern "C"
+#endif
 
 #endif
