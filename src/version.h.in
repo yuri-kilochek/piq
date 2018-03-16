@@ -3,32 +3,26 @@
 
 ${GENERATED_WARNING}
 
-#if __cplusplus
-    #include <climits>
-#else
-    #include <limits.h>
-#endif
+#include <limits.h>
 
 #if __cplusplus
 extern "C" {
 #endif
 
-typedef enum piq_impl_version {
-    PIQ_IMPL_VERSION_STRUT = ULONG_MAX,
-} piq_version_t;
+typedef unsigned long int piq_version_t;
 
 #define PIQ_COMPOSE_VERSION(major, minor, patch) \
     (((major) | 0ul) << 22 | \
      ((minor) | 0ul) << 12 | \
      ((patch) | 0ul) <<  0)
 
-#define PIQ_GET_VERSION_MAJOR(version) \
+#define PIQ_GET_MAJOR(version) \
     (((version) | 0ul) >> 22 & 0x3FF)
 
-#define PIQ_GET_VERSION_MINOR(version) \
+#define PIQ_GET_MINOR(version) \
     (((version) | 0ul) >> 12 & 0x3FF)
 
-#define PIQ_GET_VERSION_PATCH(version) \
+#define PIQ_GET_PATCH(version) \
     (((version) | 0ul) >>  0 & 0xFFF)
 
 #define PIQ_HEADER_VERSION \
