@@ -7,11 +7,10 @@
 extern "C" {
 #endif
 
-typedef uint_least32_t piq_status_t;
+typedef int_least32_t piq_status_t;
 
-#define PIQ_OK                (UINT32_C(0))
-#define PIQ_INCOMPATIBLE      (UINT32_C(1))
-#define PIQ_ALLOCATION_FAILED (UINT32_C(2))
+#define PIQ_OK                (INT32_C(0))
+#define PIQ_ALLOCATION_FAILED (INT32_C(1))
 
 #if __cplusplus
 } // extern "C"
