@@ -1,19 +1,20 @@
 #ifndef PIQ_IMPL_INCLUDE_GUARD_STATUS
 #define PIQ_IMPL_INCLUDE_GUARD_STATUS
 
-#include <limits.h>
+#include <stdint.h>
 
-typedef enum piq_status {
-    PIQ_IMPL_STATUS_STRUT = LONG_MAX,
-} piq_status_t;
+#if __cplusplus
+extern "C" {
+#endif
 
-static 
-piq_status_t const PIQ_OK = 0;
+typedef uint_least32_t piq_status_t;
 
-static 
-piq_status_t const PIQ_INCOMPATIBLE = 1;
+#define PIQ_OK                (UINT32_C(0))
+#define PIQ_INCOMPATIBLE      (UINT32_C(1))
+#define PIQ_ALLOCATION_FAILED (UINT32_C(2))
 
-static 
-piq_status_t const PIQ_ALLOCATOR_FAILED = 2;
+#if __cplusplus
+} // extern "C"
+#endif
 
 #endif
